@@ -444,4 +444,61 @@
 
     $("printBtn").addEventListener("click", () => window.print());
 
-    $("copyBtn").addEventListener("click", async ()
+    $("copyBtn").addEventListener("click", async ()});
+
+    $("copyBtn").addEventListener("click", async () => {
+      const vals = {
+        FIBTEM: $("fibtem").value || "—",
+        EXTEM: $("extem").value || "—",
+        Platelets: $("platelets").value || "—",
+        Cisterns: $("cisterns").value,
+        Shift: $("shift").value,
+        EDH: $("edh").value,
+        SAH: $("sah").value,
+        Depth: $("depth").value,
+        Extent: $("extent").value,
+        GCS: $("gcs").value || "—",
+        Hb: $("hb").value || "—",
+        Score: $("totalScore").textContent,
+        Risk: $("riskLabel").textContent,
+        Stats: $("riskStats").textContent
+      };
+
+      const summary = `
+BRAIN Score Summary
+-------------------
+FIBTEM A5: ${vals.FIBTEM} mm
+EXTEM A5: ${vals.EXTEM} mm
+Platelets: ${vals.Platelets} /µL
+
+Rotterdam CT Score:
+- Basal Cisterns: ${vals.Cisterns}
+- Midline Shift: ${vals.Shift}
+- Epidural Hematoma: ${vals.EDH}
+- SAH/IVH: ${vals.SAH}
+
+Contusion Index:
+- Depth Grade: ${vals.Depth}
+- Extent Grade: ${vals.Extent}
+
+GCS on Admission: ${vals.GCS}
+Preop Hemoglobin: ${vals.Hb} g/dL
+
+Total BRAIN Score: ${vals.Score}
+Risk Tier: ${vals.Risk}
+Performance: ${vals.Stats}
+`;
+
+      try {
+        await navigator.clipboard.writeText(summary);
+        $("copyBtn").textContent = "Copied!";
+        setTimeout(() => $("copyBtn").textContent = "Copy summary", 1500);
+      } catch (e) {
+        alert("Copy failed. You can manually select and copy the summary.");
+      }
+    });
+
+    compute(); // Initialize on load
+  </script>
+</body>
+</html>
