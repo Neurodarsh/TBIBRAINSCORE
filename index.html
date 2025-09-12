@@ -5,500 +5,188 @@
   <title>BRAIN Score Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --bg: #0f172a;
-      --card: #111827;
-      --ink: #e5e7eb;
-      --muted: #94a3b8;
-      --accent: #38bdf8;
-      --good: #22c55e;
-      --warn: #f59e0b;
-      --bad: #ef4444;
-      --line: #1f2937;
-      --chip: #0b1220;
-      --focus: #60a5fa;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-    }
-    * { box-sizing: border-box; }
-    html, body {
+    body {
       margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: #0f172a;
+      color: #e5e7eb;
+      font-family: system-ui, sans-serif;
+      padding: 20px;
     }
-    .wrap {
-      max-width: 980px;
-      margin: 28px auto;
-      padding: 0 16px 48px;
-    }
-    header {
-      margin-bottom: 18px;
-    }
-    h1 {
-      margin: 0 0 6px;
-      font-size: 26px;
-      letter-spacing: .2px;
-    }
-    p.sub {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
-    }
-    @media (min-width: 880px) {
-      .grid {
-        grid-template-columns: 1.1fr .9fr;
-      }
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-    }
-    .card h2 {
-      margin: 0;
-      padding: 14px 16px;
-      font-size: 18px;
-      border-bottom: 1px solid var(--line);
-    }
-    .card .body {
-      padding: 16px;
-    }
+    h1 { font-size: 26px; margin-bottom: 10px; }
     .section {
-      border: 1px dashed var(--line);
+      background: #111827;
+      border: 1px solid #1f2937;
       border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 14px;
-      background: #0b1220;
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
     }
-    .section h3 {
-      margin: 0 0 10px;
-      font-size: 16px;
-      color: var(--accent);
-    }.row {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr .8fr;
-      gap: 10px;
-      align-items: end;
-      margin-bottom: 10px;
-    }
-    @media (max-width: 580px) {
-      .row { grid-template-columns: 1fr 1fr; }
-      .row .status { grid-column: 1 / -1; }
-    }
-    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-    input, select {
-      width: 100%;
-      background: #0a0f1a;
-      border: 1px solid var(--line);
-      color: var(--ink);
-      padding: 10px 12px;
-      border-radius: 10px;
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
       font-size: 14px;
-      outline: none;
+      color: #94a3b8;
     }
-    input:focus, select:focus {
-      border-color: var(--focus);
-      box-shadow: 0 0 0 3px rgba(96,165,250,.15);
+    select, input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 4px;
+      background: #0a0f1a;
+      border: 1px solid #1f2937;
+      color: #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
     }
-    .unit { font-size: 12px; color: var(--muted); margin-left: 6px; }
-    .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-    .status {
-      font-size: 13px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--chip);
-      display: flex;
-      gap: 8px;
-      align-items: center;
+    .score, .risk {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
     }
-    .dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
-    .ok { background: var(--good); }
-    .warn { background: var(--warn); }
-    .bad { background: var(--bad); }
-    .pts { margin-left: auto; color: var(--ink); font-weight: 600; }
+    .low { color: #22c55e; }
+    .mod { color: #f59e0b; }
+    .high { color: #ef4444; }
+    button {
+      margin-top: 10px;
+      padding: 10px 16px;
+      background: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #2563eb;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>BRAIN Score Calculator</h1>
-      <p class="sub">Modular scoring with integrated Rotterdam CT and Contusion Index logic</p>
-    </header>
+  <h1>BRAIN Score Calculator</h1>
 
-    <div class="grid">
-      <div class="card">
-        <h2>Inputs</h2>
-        <div class="body">
+  <div class="section">
+    <h2>Bleeding Diathesis</h2>
+    <label>FIBTEM A5 (mm)</label>
+    <input type="number" id="fibtem" />
+    <label>EXTEM A5 (mm)</label>
+    <input type="number" id="extem" />
+    <label>Platelet Count (/µL)</label>
+    <input type="number" id="platelets" />
+  </div>
 
-          <div class="section">
-            <h3>Bleeding Diathesis (Lab & ROTEM)</h3>
-            <div class="row">
-              <div>
-                <label>FIBTEM A5 <span class="unit">(mm)</span></label>
-                <input type="number" id="fibtem" inputmode="decimal" step="0.1" min="0" max="100" />
-                <div class="hint">Threshold: &lt; 9 mm → 2 points</div>
-              </div>
-              <div class="status" id="fibtemStatus">
-                <span class="dot ok"></span>
-                <span>Meets threshold</span>
-                <span class="pts" id="fibtemPts">+0</span>
-              </div>
-              <div></div>
-            </div>
+  <div class="section">
+    <h2>Rotterdam CT Score</h2>
+    <label>Basal Cisterns</label>
+    <select id="cisterns">
+      <option value="0">Normal (0)</option>
+      <option value="1">Compressed (1)</option>
+      <option value="2">Absent (2)</option>
+    </select>
+    <label>Midline Shift</label>
+    <select id="shift">
+      <option value="0">&lt; 5 mm (0)</option>
+      <option value="1">≥ 5 mm (1)</option>
+    </select>
+    <label>Epidural Hematoma</label>
+    <select id="edh">
+      <option value="0">Present (0)</option>
+      <option value="1">Absent (1)</option>
+    </select>
+    <label>SAH or IVH</label>
+    <select id="sah">
+      <option value="0">Absent (0)</option>
+      <option value="1">Present (1)</option>
+    </select>
+    <div class="score" id="rotterdamScore">Rotterdam Score: 1</div>
+  </div>
 
-            <div class="row">
-              <div>
-                <label>EXTEM A5 <span class="unit">(mm)</span></label>
-                <input type="number" id="extem" inputmode="decimal" step="0.1" min="0" max="100" />
-                <div class="hint">Threshold: &lt; 35 mm → 2 points</div>
-              </div>
-              <div class="status" id="extemStatus">
-                <span class="dot ok"></span>
-                <span>Meets threshold</span>
-                <span class="pts" id="extemPts">+0</span>
-              </div>
-              <div></div>
-            </div>
+  <div class="section">
+    <h2>Contusion Index</h2>
+    <label>Depth of Contusion</label>
+    <select id="depth">
+      <option value="0">Absent (0)</option>
+      <option value="1">Half cortex (1)</option>
+      <option value="2">Full cortex (2)</option>
+      <option value="3">White matter extension (3)</option>
+    </select>
+    <label>Extent of Contusion</label>
+    <select id="extent">
+      <option value="0">Absent (0)</option>
+      <option value="1">Localized (1)</option>
+      <option value="2">Moderately extensive (2)</option>
+      <option value="3">Extensive (3)</option>
+    </select>
+    <div class="score" id="contusionIndex">Contusion Index: 0</div>
+  </div>
 
-            <div class="row">
-              <div>
-                <label>Platelet Count <span class="unit">(/µL)</span></label>
-                <input type="number" id="platelets" inputmode="numeric" step="1000" min="0" max="3000000" />
-                <div class="hint">Threshold: &lt; 100,000 → 1 point</div>
-              </div>
-              <div class="status" id="pltStatus">
-                <span class="dot ok"></span>
-                <span>Meets threshold</span>
-                <span class="pts" id="pltPts">+0</span>
-              </div>
-              <div></div>
-            </div>
-          </div>
+  <div class="section">
+    <h2>Admission Clinical State</h2>
+    <label>GCS on Admission</label>
+    <input type="number" id="gcs" />
+    <label>Preop Hemoglobin (g/dL)</label>
+    <input type="number" id="hb" />
+  </div>
 
-          <div class="section">
-            <h3>Rotterdam CT Score</h3>
-            <div class="row">
-              <div>
-                <label>Basal Cisterns</label>
-                <select id="cisterns">
-                  <option value="0">Normal (0)</option>
-                  <option value="1">Compressed (1)</option>
-                  <option value="2">Absent (2)</option>
-                </select>
-              </div>
-              <div>
-                <label>Midline Shift</label>
-                <select id="shift">
-                  <option value="0">&lt; 5 mm (0)</option>
-                  <option value="1">≥ 5 mm (1)</option>
-                </select>
-              </div>
-              <div>
-                <label>Epidural Hematoma</label>
-                <select id="edh">
-                  <option value="0">Present (0)</option>
-                  <option value="1">Absent (1)</option>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div>
-                <label>SAH or IVH</label>
-                <select id="sah">
-                  <option value="0">Absent (0)</option>
-                  <option value="1">Present (1)</option>
-                </select>
-              </div>
-              <div class="status" id="rotStatus">
-                <span class="dot ok"></span>
-                <span>Rotterdam Score: 1</span>
-                <span class="pts" id="rotPts">+0</span>
-              </div>
-              <div></div>
-            </div>
-          </div>
-
-          <div class="section">
-            <h3>Contusion Index</h3>
-            <div class="row">
-              <div>
-                <label>Depth of Contusion</label>
-                <select id="depth">
-                  <option value="0">Absent (0)</option>
-                  <option value="1">Half cortex (1)</option>
-                  <option value="2">Full cortex (2)</option>
-                  <option value="3">White matter extension (3)</option>
-                </select>
-              </div>
-              <div>
-                <label>Extent of Contusion</label>
-                <select id="extent">
-                  <option value="0">Absent (0)</option>
-                  <option value="1">Localized (1)</option>
-                  <option value="2">Moderately extensive (2)</option>
-                  <option value="3">Extensive (3)</option>
-                </select>
-              </div>
-              <div class="status" id="contStatus">
-                <span class="dot ok"></span>
-                <span>Contusion Index: 0</span>
-                <span class="pts" id="contPts">+0</span>
-              </div>
-            </div>
-          </div><div class="section">
-            <h3>Admission Clinical State</h3>
-            <div class="row">
-              <div>
-                <label>GCS on Admission</label>
-                <input type="number" id="gcs" inputmode="numeric" step="1" min="3" max="15" />
-                <div class="hint">Threshold: ≤ 8 → 1 point</div>
-              </div>
-              <div class="status" id="gcsStatus">
-                <span class="dot ok"></span>
-                <span>Meets threshold</span>
-                <span class="pts" id="gcsPts">+0</span>
-              </div>
-              <div></div>
-            </div>
-
-            <div class="row">
-              <div>
-                <label>Preop Hemoglobin <span class="unit">(g/dL)</span></label>
-                <input type="number" id="hb" inputmode="decimal" step="0.1" min="0" max="25" />
-                <div class="hint">Threshold: &lt; 10 g/dL → 1 point</div>
-              </div>
-              <div class="status" id="hbStatus">
-                <span class="dot ok"></span>
-                <span>Meets threshold</span>
-                <span class="pts" id="hbPts">+0</span>
-              </div>
-              <div></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="card">
-        <h2>Score and Guidance</h2>
-        <div class="body">
-          <div class="scorebox">
-            <div>
-              <div class="badge">Total BRAIN score</div>
-              <div class="score" id="totalScore">0</div>
-              <div class="muted">Range: 0 – 10</div>
-            </div>
-            <div>
-              <div class="badge">Risk stratum</div>
-              <div class="risk" id="riskLabel">—</div>
-              <div class="muted" id="riskStats">Enter values to classify risk</div>
-            </div>
-          </div>
-
-          <div style="height:10px"></div>
-
-          <div class="section">
-            <h3>Clinical Prompts</h3>
-            <ul class="list" id="prompts">
-              <li><strong>Note:</strong> Enter inputs to view risk-aligned actions.</li>
-            </ul>
-          </div>
-
-          <div class="section">
-            <h3>Utilities</h3>
-            <div class="actions">
-              <button id="copyBtn">Copy summary</button>
-              <button id="printBtn">Print</button>
-              <button id="resetBtn">Reset</button>
-            </div>
-            <div class="footer">This tool summarizes thresholds and suggested actions; it does not replace clinical judgment or local protocols.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <p class="footer">
-      Risk performance summary: Low (0–2) SBE incidence 0.9% with 99.1% NPV; Moderate (3–6) SBE incidence 38.5%; High (≥7) SBE incidence 88.9% with 88.9% PPV.
-    </p>
+  <div class="section">
+    <h2>Total BRAIN Score</h2>
+    <div class="score" id="brainScore">Score: 0</div>
+    <div class="risk" id="riskLevel">Risk: —</div>
+    <button onclick="window.print()">Print</button>
   </div>
 
   <script>
-    const $ = (id) => document.getElementById(id);
+    function calculateScore() {
+      let score = 0;
 
-    const fields = {
-      fibtem: { el: $("fibtem"), status: $("fibtemStatus"), pts: $("fibtemPts"), check: v => v < 9 ? 2 : 0 },
-      extem:  { el: $("extem"),  status: $("extemStatus"),  pts: $("extemPts"),  check: v => v < 35 ? 2 : 0 },
-      platelets:{ el: $("platelets"), status: $("pltStatus"), pts: $("pltPts"), check: v => v < 100000 ? 1 : 0 },
-      gcs:      { el: $("gcs"),       status: $("gcsStatus"), pts: $("gcsPts"),  check: v => v <= 8 ? 1 : 0 },
-      hb:       { el: $("hb"),        status: $("hbStatus"),  pts: $("hbPts"),   check: v => v < 10 ? 1 : 0 },
-    };
+      const fibtem = parseFloat(document.getElementById("fibtem").value);
+      if (fibtem < 9) score += 2;
 
-    function parseNum(v) {
-      const x = parseFloat(v);
-      return Number.isFinite(x) ? x : null;
-    }
+      const extem = parseFloat(document.getElementById("extem").value);
+      if (extem < 35) score += 2;
 
-    function compute() {
-      let total = 0;
+      const platelets = parseFloat(document.getElementById("platelets").value);
+      if (platelets < 100000) score += 1;
 
-      Object.values(fields).forEach(f => {
-        const v = parseNum(f.el.value);
-        const pts = v !== null ? f.check(v) : 0;
-        total += pts;
-        f.pts.textContent = "+" + pts;
-        const dot = f.status.querySelector(".dot");
-        const label = f.status.querySelector("span:nth-child(2)");
-        if (v === null) {
-          dot.className = "dot ok";
-          label.textContent = "No value";
-        } else if (pts > 0) {
-          dot.className = "dot bad";
-          label.textContent = "Threshold met (adds points)";
-        } else {
-          dot.className = "dot ok";
-          label.textContent = "Threshold not met";
-        }
-      });
+      const cisterns = parseInt(document.getElementById("cisterns").value);
+      const shift = parseInt(document.getElementById("shift").value);
+      const edh = parseInt(document.getElementById("edh").value);
+      const sah = parseInt(document.getElementById("sah").value);
+      const rotterdam = 1 + cisterns + shift + edh + sah;
+      document.getElementById("rotterdamScore").textContent = "Rotterdam Score: " + rotterdam;
+      if (rotterdam >= 4) score += 2;
 
-      // Rotterdam Score
-      const rot = 1 + parseInt($("cisterns").value) + parseInt($("shift").value) + parseInt($("edh").value) + parseInt($("sah").value);
-      $("rotStatus").querySelector("span:nth-child(2)").textContent = "Rotterdam Score: " + rot;
-      $("rotPts").textContent = rot >= 4 ? "+2" : "+0";
-      $("rotStatus").querySelector(".dot").className = rot >= 4 ? "dot bad" : "dot ok";
-      total += rot >= 4 ? 2 : 0;
-
-      // Contusion Index
-      const depth = parseInt($("depth").value);
-      const extent = parseInt($("extent").value);
+      const depth = parseInt(document.getElementById("depth").value);
+      const extent = parseInt(document.getElementById("extent").value);
       const ci = depth * extent;
-      $("contStatus").querySelector("span:nth-child(2)").textContent = "Contusion Index: " + ci;
-      $("contPts").textContent = ci >= 4 ? "+1" : "+0";
-      $("contStatus").querySelector(".dot").className = ci >= 4 ? "dot bad" : "dot ok";
-      total += ci >= 4 ? 1 : 0;
+      document.getElementById("contusionIndex").textContent = "Contusion Index: " + ci;
+      if (ci >= 4) score += 1;
 
-      $("totalScore").textContent = total.toString();
+      const gcs = parseFloat(document.getElementById("gcs").value);
+      if (gcs <= 8) score += 1;
 
-      // Risk Stratification
-      const riskEl = $("riskLabel");
-      const statsEl = $("riskStats");
-      const promptsEl = $("prompts");
-      promptsEl.innerHTML = "";
+      const hb = parseFloat(document.getElementById("hb").value);
+      if (hb < 10) score += 1;
 
-      let risk = "", stats = "", prompts = [];
-      if (total <= 2) {
-        risk = "Low risk (0–2)";
-        stats = "SBE incidence ~0.9%; NPV ~99.1%";
-        prompts = [
-          "Standard neuromonitoring and routine postoperative care.",
-          "No immediate hemostatic intervention required beyond standard protocols.",
-          "Repeat CT only if clinical status changes or per institutional pathway."
-        ];
+      document.getElementById("brainScore").textContent = "Score: " + score;
+
+      const riskEl = document.getElementById("riskLevel");
+      if (score <= 2) {
+        riskEl.textContent = "Risk: Low (0–2) – SBE ~0.9%, NPV ~99.1%";
         riskEl.className = "risk low";
-      } else if (total <= 6) {
-        risk = "Moderate risk (3–6)";
-        stats = "SBE incidence ~38.5%";
-        prompts = [
-          "Close neurological monitoring with lower threshold for repeat/postoperative CT.",
-          "Initiate ROTEM-guided hemostatic intervention as indicated.",
-          "Ensure rapid availability of blood products and fibrinogen concentrates."
-        ];
+      } else if (score <= 6) {
+        riskEl.textContent = "Risk: Moderate (3–6) – SBE ~38.5%";
         riskEl.className = "risk mod";
       } else {
-        risk = "High risk (≥7)";
-        stats = "SBE incidence ~88.9%; PPV ~88.9%";
-        prompts = [
-          "Commence ROTEM-guided hemostatic resuscitation.",
-          "Consider preemptive fibrinogen concentrate or platelets before lab results.",
-          "Plan for ICU-level care and invasive ICP monitoring."
-        ];
+        riskEl.textContent = "Risk: High (≥7) – SBE ~88.9%, PPV ~88.9%";
         riskEl.className = "risk high";
       }
-
-      riskEl.textContent = risk;
-      statsEl.textContent = stats;
-      prompts.forEach(txt => {
-        const li = document.createElement("li");
-        const strong = document.createElement("strong");
-        strong.textContent = "Action: ";
-        li.appendChild(strong);
-        li.append(" " + txt);
-        promptsEl.appendChild(li);
-      });
     }
 
     document.querySelectorAll("input, select").forEach(el => {
-      el.addEventListener("input", compute);
+      el.addEventListener("input", calculateScore);
     });
 
-    $("resetBtn").addEventListener("click", () => {
-      document.querySelectorAll("input").forEach(el => el.value = "");
-      compute();
-    });
-
-    $("printBtn").addEventListener("click", () => window.print());
-
-    $("copyBtn").addEventListener("click", async ()});
-
-    $("copyBtn").addEventListener("click", async () => {
-      const vals = {
-        FIBTEM: $("fibtem").value || "—",
-        EXTEM: $("extem").value || "—",
-        Platelets: $("platelets").value || "—",
-        Cisterns: $("cisterns").value,
-        Shift: $("shift").value,
-        EDH: $("edh").value,
-        SAH: $("sah").value,
-        Depth: $("depth").value,
-        Extent: $("extent").value,
-        GCS: $("gcs").value || "—",
-        Hb: $("hb").value || "—",
-        Score: $("totalScore").textContent,
-        Risk: $("riskLabel").textContent,
-        Stats: $("riskStats").textContent
-      };
-
-      const summary = `
-BRAIN Score Summary
--------------------
-FIBTEM A5: ${vals.FIBTEM} mm
-EXTEM A5: ${vals.EXTEM} mm
-Platelets: ${vals.Platelets} /µL
-
-Rotterdam CT Score:
-- Basal Cisterns: ${vals.Cisterns}
-- Midline Shift: ${vals.Shift}
-- Epidural Hematoma: ${vals.EDH}
-- SAH/IVH: ${vals.SAH}
-
-Contusion Index:
-- Depth Grade: ${vals.Depth}
-- Extent Grade: ${vals.Extent}
-
-GCS on Admission: ${vals.GCS}
-Preop Hemoglobin: ${vals.Hb} g/dL
-
-Total BRAIN Score: ${vals.Score}
-Risk Tier: ${vals.Risk}
-Performance: ${vals.Stats}
-`;
-
-      try {
-        await navigator.clipboard.writeText(summary);
-        $("copyBtn").textContent = "Copied!";
-        setTimeout(() => $("copyBtn").textContent = "Copy summary", 1500);
-      } catch (e) {
-        alert("Copy failed. You can manually select and copy the summary.");
-      }
-    });
-
-    compute(); // Initialize on load
+    calculateScore(); // Initialize on load
   </script>
 </body>
 </html>
