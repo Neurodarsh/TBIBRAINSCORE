@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>BRAIN Score Calculator</title>
+  <title>PHI AND INTRAOP COAGULOPATHY</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -129,8 +129,7 @@
   <div class="wrap">
     <header>
   <h1>SCORE TO PREDICT PHI AND INTRAOP COAGULOPATHY</h1>
-  <p class="sub"><strong>PHI Risk Score:</strong> Predicts Postoperative Hemorrhagic Injury and intraoperative coagulopathy using threshold-based inputs</p>
-</header>
+  
 </header>
 
     <div class="grid">
@@ -327,7 +326,7 @@
 
     <p class="footer">
       <div class="section">
-  <h3>Definition: Postoperative Hemorrhagic Injury (PHI)</h3>
+  <h3>Definition: PHI AND INTRAOP COAGULOPATHY</h3>
   <ul class="list">
     <li><strong>Intra-operative Coagulopathy:</strong> ROTEM or lab-based evidence of impaired clot formation or fibrinolysis</li>
     <li><strong>Reoperation for New Post-op Hematoma:</strong> Unplanned surgical intervention required</li>
@@ -337,7 +336,7 @@
 </div>
 
     <p class="footer">
-  Risk performance summary: Low (0–2) PHI incidence 0.9% with 99.1% NPV; Moderate (3–6) PHI incidence 38.5%; High (≥7) PHI incidence 88.9% with 88.9% PPV.
+  Risk performance summary: Low (0–2) PHI AND INTRAOP COAGULOPATHY incidence 0.9% with 99.1% NPV; Moderate (3–6) PHI AND INTRAOP COAGULOPATHY incidence 38.5%; High (≥7) PHI AND INTRAOP COAGULOPATHY incidence 88.9% with 88.9% PPV.
 </p>
   </div> <!-- .wrap ends here -->
   </div><script>
@@ -405,7 +404,7 @@
       let risk = "", stats = "", prompts = [];
       if (total <= 2) {
         risk = "Low risk (0–2)";
-        stats = "SBE incidence ~0.9%; NPV ~99.1%";
+        stats = "PHI AND INTRAOP COAGULOPATHY incidence ~0.9%; NPV ~99.1%";
         prompts = [
           "Standard neuromonitoring and routine postoperative care.",
           "No immediate hemostatic intervention required beyond standard protocols.",
@@ -414,7 +413,7 @@
         riskEl.className = "risk low";
       } else if (total <= 6) {
         risk = "Moderate risk (3–6)";
-        stats = "SBE incidence ~38.5%";
+        stats = "PHI AND INTRAOP COAGULOPATHY incidence ~38.5%";
         prompts = [
           "Close neurological monitoring with lower threshold for repeat/postoperative CT.",
           "Initiate ROTEM-guided hemostatic intervention as indicated.",
@@ -423,7 +422,7 @@
         riskEl.className = "risk mod";
       } else {
         risk = "High risk (≥7)";
-        stats = "SBE incidence ~88.9%; PPV ~88.9%";
+        stats = "PHI AND INTRAOP COAGULOPATHY incidence ~88.9%; PPV ~88.9%";
         prompts = [
           "Commence ROTEM-guided hemostatic resuscitation.",
           "Consider preemptive fibrinogen concentrate or platelets before lab results.",
@@ -493,7 +492,7 @@ Contusion Index:
 GCS on Admission: ${vals.GCS}
 Preop Hemoglobin: ${vals.Hb} g/dL
 
-Total BRAIN Score: ${vals.Score}
+Total PHI AND INTRAOP COAGULOPATHY Score: ${vals.Score}
 Risk Tier: ${vals.Risk}
 Performance: ${vals.Stats}
 `;
